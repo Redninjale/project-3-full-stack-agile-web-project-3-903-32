@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar'; 
-import Navbar from '../components/NavbarManager';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/NavbarManager";
+import { useNavigate } from "react-router-dom";
 
 /**
  * This will return to a boolean on the position of the user, returns true if the user is a manager, false otherwise.
  * @returns a boolean, on whether the user is a manager or not.
  */
-const isAuthenticatedManager = () => {
-  const isManager = localStorage.getItem("isManagerLoggedIn");
-  console.log(isManager);
-  return isManager;
-};
+// const isAuthenticatedManager = () => {
+//   const isManager = localStorage.getItem("isManagerLoggedIn");
+//   console.log(isManager);
+//   return isManager;
+// };
 
 /**
  * This function will determind if a user is a manager. If the user is not a manager they will be sent back to the landing page.
- * @param {object} WrappedComponent 
+ * @param {object} WrappedComponent
  * @returns to the landing page if the user is not a manager
  */
-const withManagerAuthentication = (WrappedComponent) => {
-  const AuthenticatedComponent = (props) => {
-    const navigate = useNavigate();
-    useEffect(() => {
-      if (isAuthenticatedManager() === 'false') {
-        navigate('/'); 
-      }
-    }, [navigate]);
+// const withManagerAuthentication = (WrappedComponent) => {
+//   const AuthenticatedComponent = (props) => {
+//     const navigate = useNavigate();
+//     useEffect(() => {
+//       if (isAuthenticatedManager() === 'false') {
+//         navigate('/');
+//       }
+//     }, [navigate]);
 
-    // Render the wrapped component if the user is authenticated as a manager
-    return isAuthenticatedManager() ? <WrappedComponent {...props} /> : null;
-  };
+//     // Render the wrapped component if the user is authenticated as a manager
+//     return isAuthenticatedManager() ? <WrappedComponent {...props} /> : null;
+//   };
 
-  return AuthenticatedComponent;
-};
+//   return AuthenticatedComponent;
+// };
 /**
- * 
+ *
  * @param {*} param0 - contains the new Name and the function to update
  * @returns the Order new name
  */
@@ -47,9 +47,9 @@ function EditableName({ name, onUpdate }) {
   }, [name]);
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onUpdate(editedName);
-      setEditMode(false);  
+      setEditMode(false);
     }
   };
 
@@ -68,10 +68,10 @@ function EditableName({ name, onUpdate }) {
           type="text"
           value={editedName}
           onChange={handleChange}
-          onKeyDown ={handleKeyPress}
+          onKeyDown={handleKeyPress}
           autoFocus
-          onBlur={() => setEditMode(false)}  
-          style={{ paddingLeft: '10px', width: '150px' }}
+          onBlur={() => setEditMode(false)}
+          style={{ paddingLeft: "10px", width: "150px" }}
         />
       ) : (
         <span onClick={handleNameClick}>{name}</span>
@@ -92,7 +92,7 @@ function EditCount({ count, onUpdate }) {
   }, [count]);
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       // Check if the input is a valid integer string
       if (/^\d+$/.test(editedCount)) {
         const parsedCount = parseInt(editedCount, 10);
@@ -100,10 +100,10 @@ function EditCount({ count, onUpdate }) {
           onUpdate(parsedCount);
           setEditMode(false);
         } else {
-          alert('Error: Please enter a positive integer for the quantity.');
+          alert("Error: Please enter a positive integer for the quantity.");
         }
       } else {
-        alert('Error: Please enter a valid positive integer for the quantity.');
+        alert("Error: Please enter a valid positive integer for the quantity.");
       }
     }
   };
@@ -123,10 +123,10 @@ function EditCount({ count, onUpdate }) {
           type="number"
           value={editedCount}
           onChange={handleChange}
-          onKeyDown ={handleKeyPress}
+          onKeyDown={handleKeyPress}
           autoFocus
-          onBlur={() => setEditMode(false)}  
-          style={{ paddingLeft: '10px', width: '120px' }}
+          onBlur={() => setEditMode(false)}
+          style={{ paddingLeft: "10px", width: "120px" }}
         />
       ) : (
         <span onClick={handleClick}>{count}</span>
@@ -139,8 +139,8 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const [ascending, setAscending] = useState(false);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
@@ -153,51 +153,63 @@ const Orders = () => {
 
   async function getOrders() {
     try {
-      let url = process.env.REACT_APP_BACKEND_URL + `/api/order_history?ascending=${ascending}`;
-      if(startTime && endTime) {
-        if(startTime < endTime) {
-          url += `&start_time=${startTime}&end_time=${endTime}`; 
+      let url =
+        process.env.REACT_APP_BACKEND_URL +
+        `/api/order_history?ascending=${ascending}`;
+      if (startTime && endTime) {
+        if (startTime < endTime) {
+          url += `&start_time=${startTime}&end_time=${endTime}`;
         } else {
-          alert("Start time cannot be set after the end time.")
+          alert("Start time cannot be set after the end time.");
         }
-        
       }
       const option = {
         method: "GET",
-        mode: 'cors'
+        mode: "cors",
       };
 
-      const response = await fetch(url,option);
-      
+      const response = await fetch(url, option);
+
       if (response.ok) {
         const data = await response.json();
-        const aggregatedOrders = data.map(order => ({
+        const aggregatedOrders = data.map((order) => ({
           ...order,
-          items: aggregateItems(order.items)
+          items: aggregateItems(order.items),
         }));
         setOrders(aggregatedOrders);
         console.log(orders);
       } else {
-        console.error('Failed to fetch order history:', response.status, response.statusText);
+        console.error(
+          "Failed to fetch order history:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
-      console.error('Error fetching order history:', error);
+      console.error("Error fetching order history:", error);
     }
   }
 
   const deleteOrder = async (orderId) => {
     try {
-      const response = await fetch(process.env.REACT_APP_BACKEND_URL + `/api/order/${orderId}`, {
-        method: "DELETE",
-        mode: 'cors'
-      });
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + `/api/order/${orderId}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+        }
+      );
       if (response.ok) {
         getOrders();
       } else {
-        console.error('Failed to delete order:', response.status, response.statusText);
+        console.error(
+          "Failed to delete order:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
-      console.error('Error deleting order:', error);
+      console.error("Error deleting order:", error);
     }
   };
 
@@ -205,57 +217,74 @@ const Orders = () => {
     try {
       const url = `${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`;
       const response = await fetch(url, {
-        method: 'PUT', 
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ isComplete }),
-        mode: 'cors',
+        mode: "cors",
       });
-  
+
       if (response.ok) {
-        setOrders(orders.map(order => {
-          if (order.orderID === orderId) {
-            return { ...order, isComplete };
-          }
-          return order;
-        }));
+        setOrders(
+          orders.map((order) => {
+            if (order.orderID === orderId) {
+              return { ...order, isComplete };
+            }
+            return order;
+          })
+        );
         alert("Order " + orderId + " is updated successfully!");
       } else {
-        console.error('Failed to update order completion status:', response.status, response.statusText);
+        console.error(
+          "Failed to update order completion status:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
-      console.error('Error updating order completion status:', error);
+      console.error("Error updating order completion status:", error);
     }
   };
 
   const updateCustomerName = async (orderId, customerName) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerName })
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ customerName }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Name updated successfully:', data);
-        
-        setOrders(orders.map(order => {
-          if (order.orderID === orderId) {
-            return { ...order, customerName };
-          }
-          return order;
-        }));
-        
-        alert("Customer name of order " + orderId + " is updated successfully!");
-        return data; 
+        console.log("Name updated successfully:", data);
+
+        setOrders(
+          orders.map((order) => {
+            if (order.orderID === orderId) {
+              return { ...order, customerName };
+            }
+            return order;
+          })
+        );
+
+        alert(
+          "Customer name of order " + orderId + " is updated successfully!"
+        );
+        return data;
       } else {
-        console.error('Failed to update customer name:', response.status, response.statusText);
+        console.error(
+          "Failed to update customer name:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
-      console.error('Error updating name:', error);
-      throw error; 
+      console.error("Error updating name:", error);
+      throw error;
     }
   };
 
@@ -267,109 +296,130 @@ const Orders = () => {
     // Limit newItemAmount to 99
     newItemAmount = Math.min(newItemAmount, 99);
 
-    const selectedItem = menuItems.find(item => item.itemName === newItemName);
+    const selectedItem = menuItems.find(
+      (item) => item.itemName === newItemName
+    );
     if (!selectedItem) {
-      alert('Item not found');
+      alert("Item not found");
       return;
-    } 
+    }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          addItem: { menu_id: selectedItem.id, amount: newItemAmount }
-        })
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            addItem: { menu_id: selectedItem.id, amount: newItemAmount },
+          }),
+        }
+      );
 
       if (response.ok) {
-        alert('Item added successfully!');
+        alert("Item added successfully!");
         getOrders();
         console.log(orders);
       } else {
-        console.error('Failed to add item:', await response.json());
+        console.error("Failed to add item:", await response.json());
       }
     } catch (error) {
-      console.error('Error updating name:', error);
-      throw error; 
+      console.error("Error updating name:", error);
+      throw error;
     }
-};
-
+  };
 
   const deleteItem = async (orderId, itemName, itemCount) => {
-    const selectedItem = menuItems.find(item => item.itemName === itemName);
+    const selectedItem = menuItems.find((item) => item.itemName === itemName);
     if (!selectedItem) {
-      alert('Item not found');
+      alert("Item not found");
       return;
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          deleteItem: { menu_id: selectedItem.id, amount: itemCount }
-        })
-      });
-  
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            deleteItem: { menu_id: selectedItem.id, amount: itemCount },
+          }),
+        }
+      );
+
       if (response.ok) {
-        alert('Item deleted successfully!');
+        alert("Item deleted successfully!");
         getOrders(); // Refresh orders to show updated info
       } else {
-        console.error('Failed to delete item:', await response.json());
+        console.error("Failed to delete item:", await response.json());
       }
     } catch (error) {
-      console.error('Error deleting item:', error);
-      throw error; 
+      console.error("Error deleting item:", error);
+      throw error;
     }
   };
 
   const updateAmountItem = async (orderId, itemName, oldCount, newCount) => {
     newCount = Math.abs(parseInt(newCount, 10)); // Ensure positive integer
 
-    newCount = Math.min(99,newCount);
+    newCount = Math.min(99, newCount);
 
-    const selectedItem = menuItems.find(item => item.itemName === itemName);
+    const selectedItem = menuItems.find((item) => item.itemName === itemName);
     if (!selectedItem) {
-      alert('Item not found');
+      alert("Item not found");
       return;
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          updateItem: { menu_id: selectedItem.id, old_amount: oldCount, new_amount: newCount }
-        })
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/order/${orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            updateItem: {
+              menu_id: selectedItem.id,
+              old_amount: oldCount,
+              new_amount: newCount,
+            },
+          }),
+        }
+      );
 
       if (response.ok) {
-        alert('Item updated successfully!');
+        alert("Item updated successfully!");
         getOrders(); // Refresh orders to show updated info
       } else {
-        console.error('Failed to update item:', await response.json());
+        console.error("Failed to update item:", await response.json());
       }
     } catch (error) {
-      console.error('Error updating item:', error);
-      throw error; 
+      console.error("Error updating item:", error);
+      throw error;
     }
   };
 
   async function getMenu() {
     try {
-      const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/api/menu", {
-        method: "GET",
-        mode: 'cors'
-      });
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/api/menu",
+        {
+          method: "GET",
+          mode: "cors",
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setMenuItems(data);
       } else {
-        console.error('Failed to fetch menu:', response.status, response.statusText);
+        console.error(
+          "Failed to fetch menu:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
-      console.error('Error fetching menu:', error);
+      console.error("Error fetching menu:", error);
     }
   }
 
@@ -379,7 +429,7 @@ const Orders = () => {
 
   function aggregateItems(items) {
     const itemMap = new Map();
-  
+
     items.forEach((item) => {
       const existingItem = itemMap.get(item.itemName);
       if (existingItem) {
@@ -388,8 +438,10 @@ const Orders = () => {
         itemMap.set(item.itemName, { ...item, count: 1 });
       }
     });
-  
-    return Array.from(itemMap.values()).sort((a, b) => a.itemName.localeCompare(b.itemName));;
+
+    return Array.from(itemMap.values()).sort((a, b) =>
+      a.itemName.localeCompare(b.itemName)
+    );
   }
 
   return (
@@ -404,30 +456,30 @@ const Orders = () => {
               onClick={() => setAscending(!ascending)}
               className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
             >
-              Sort by Time 
+              Sort by Time
             </button>
 
-            <label htmlFor ="start-time" className='ml-4'>
-              <span className = 'mr-2'>Start Time:</span> 
+            <label htmlFor="start-time" className="ml-4">
+              <span className="mr-2">Start Time:</span>
               <input
-                type = "datetime-local"
-                id = "start-time"
-                name = "start-time"
-                value = {startTime}
-                onChange = {(e) => setStartTime(e.target.value)}
-                className = 'border-2 border-gray-300 p-2 rounded-lg'
+                type="datetime-local"
+                id="start-time"
+                name="start-time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                className="border-2 border-gray-300 p-2 rounded-lg"
               />
             </label>
 
-            <label htmlFor ="end-time" className='ml-4'>
-              <span className = 'mr-2'>End Time:</span> 
+            <label htmlFor="end-time" className="ml-4">
+              <span className="mr-2">End Time:</span>
               <input
-                type = "datetime-local"
-                id = "end-time"
-                name = "end-time"
-                value = {endTime}
-                onChange = {(e) => setEndTime(e.target.value)}
-                className = 'border-2 border-gray-300 p-2 rounded-lg'
+                type="datetime-local"
+                id="end-time"
+                name="end-time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                className="border-2 border-gray-300 p-2 rounded-lg"
               />
             </label>
           </div>
@@ -461,22 +513,30 @@ const Orders = () => {
               {orders.map((order, index) => (
                 <React.Fragment key={index}>
                   <tr className="bg-white border-b">
-                    <td className="p-4 text-base text-gray-700">{order.orderID}</td>
+                    <td className="p-4 text-base text-gray-700">
+                      {order.orderID}
+                    </td>
                     <td className="p-4 text-base text-gray-700">
                       <EditableName
                         name={order.customerName}
-                        onUpdate={(newName) => updateCustomerName(order.orderID, newName)}                    
+                        onUpdate={(newName) =>
+                          updateCustomerName(order.orderID, newName)
+                        }
                       />
                     </td>
-                    <td className="p-4 text-base text-gray-700">{order.time}</td>
-                    <td className="p-4 text-base text-gray-700">${order.totalPrice.toFixed(2)}</td>
+                    <td className="p-4 text-base text-gray-700">
+                      {order.time}
+                    </td>
+                    <td className="p-4 text-base text-gray-700">
+                      ${order.totalPrice.toFixed(2)}
+                    </td>
                     <td className="p-4 text-base text-gray-700">
                       <button
                         type="button"
                         className="text-blue-600 hover:text-blue-900"
                         onClick={() => toggleItemsView(order.orderID)}
                       >
-                        {expandedOrderId === order.orderID ? 'Hide' : 'View'}
+                        {expandedOrderId === order.orderID ? "Hide" : "View"}
                       </button>
                     </td>
                     <td className="p-4 text-base text-gray-700">
@@ -484,7 +544,9 @@ const Orders = () => {
                         <input
                           type="checkbox"
                           checked={order.isComplete}
-                          onChange={() => toggleComplete(order.orderID, !order.isComplete)}
+                          onChange={() =>
+                            toggleComplete(order.orderID, !order.isComplete)
+                          }
                           className="form-checkbox text-blue-500 h-6 w-6 rounded-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         />
                       </label>
@@ -506,28 +568,53 @@ const Orders = () => {
                           <table className="min-w-full">
                             <thead>
                               <tr className="bg-gray-200">
-                                <th className="p-2 text-center text-base font-medium text-gray-700">Item Name</th>
-                                <th className="p-2 text-center text-base font-medium text-gray-700">Price</th>
-                                <th className="p-2 text-center text-base font-medium text-gray-700">Quantity</th>
-                                <th className="p-2 text-center text-base font-medium text-gray-700">Actions</th>
+                                <th className="p-2 text-center text-base font-medium text-gray-700">
+                                  Item Name
+                                </th>
+                                <th className="p-2 text-center text-base font-medium text-gray-700">
+                                  Price
+                                </th>
+                                <th className="p-2 text-center text-base font-medium text-gray-700">
+                                  Quantity
+                                </th>
+                                <th className="p-2 text-center text-base font-medium text-gray-700">
+                                  Actions
+                                </th>
                               </tr>
                             </thead>
                             <tbody>
                               {order.items.map((item, itemIndex) => (
                                 <tr key={itemIndex} className="bg-white">
-                                  <td className="p-2 text-base text-gray-700">{item.itemName}</td>
-                                  <td className="p-2 text-base text-gray-700">${item.price.toFixed(2)}</td>
+                                  <td className="p-2 text-base text-gray-700">
+                                    {item.itemName}
+                                  </td>
+                                  <td className="p-2 text-base text-gray-700">
+                                    ${item.price.toFixed(2)}
+                                  </td>
                                   <td className="p-2 text-base text-gray-700">
                                     <EditCount
                                       count={item.count}
-                                      onUpdate={(newCount) => updateAmountItem(order.orderID, item.itemName, item.count, newCount)}                    
+                                      onUpdate={(newCount) =>
+                                        updateAmountItem(
+                                          order.orderID,
+                                          item.itemName,
+                                          item.count,
+                                          newCount
+                                        )
+                                      }
                                     />
                                   </td>
                                   <td className="p-2">
                                     <button
                                       type="button"
                                       className="text-red-600 hover:text-red-700"
-                                      onClick={() => deleteItem(order.orderID, item.itemName, item.count)}
+                                      onClick={() =>
+                                        deleteItem(
+                                          order.orderID,
+                                          item.itemName,
+                                          item.count
+                                        )
+                                      }
                                     >
                                       Delete
                                     </button>
@@ -536,10 +623,23 @@ const Orders = () => {
                               ))}
                               <tr>
                                 <td colSpan="4">
-                                  <form onSubmit={(e) => addNewItem(order.orderID, e)}>
-                                    <select name="newItemName" required className="mt-2 mr-4 border-2 border-gray-300 p-1 rounded-lg">
-                                      {menuItems.map(item => (
-                                        <option key={item.id} value={item.itemName}>{item.itemName}</option>
+                                  <form
+                                    onSubmit={(e) =>
+                                      addNewItem(order.orderID, e)
+                                    }
+                                  >
+                                    <select
+                                      name="newItemName"
+                                      required
+                                      className="mt-2 mr-4 border-2 border-gray-300 p-1 rounded-lg"
+                                    >
+                                      {menuItems.map((item) => (
+                                        <option
+                                          key={item.id}
+                                          value={item.itemName}
+                                        >
+                                          {item.itemName}
+                                        </option>
                                       ))}
                                     </select>
                                     <input
@@ -550,7 +650,10 @@ const Orders = () => {
                                       min="1"
                                       className="mt-2 mr-4 border-2 border-gray-300 p-1 rounded-lg"
                                     />
-                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                    <button
+                                      type="submit"
+                                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                                    >
                                       Add Item
                                     </button>
                                   </form>
@@ -559,7 +662,7 @@ const Orders = () => {
                             </tbody>
                           </table>
                         </div>
-                      </td>        
+                      </td>
                     </tr>
                   )}
                 </React.Fragment>
@@ -572,4 +675,5 @@ const Orders = () => {
   );
 };
 
-export default withManagerAuthentication(Orders);
+export default Orders;
+// export default withManagerAuthentication(Orders);
