@@ -2,6 +2,7 @@ def create_table_commands():
     table_commands = [
         """
         DROP TABLE IF EXISTS OMJunc, MIJunc, Orders, Menu, Inventory, Employees CASCADE;
+        DROP TYPE IF EXISTS menu_category;
         """,
 
         """
@@ -25,10 +26,13 @@ def create_table_commands():
         """,
 
         """
+        CREATE TYPE MENU_CATEGORY AS ENUM ('Limited Time Offers', 'Value Meals', 'Burgers', 'Sandwiches', 'Salads', 'Deserts', 'Appetizers', 'Beverages');
+        
         CREATE TABLE Menu (
             id INT PRIMARY KEY,
             itemName TEXT NOT NULL,
-            price DECIMAL(10,2) NOT NULL
+            price DECIMAL(10,2) NOT NULL,
+            category MENU_CATEGORY NOT NULL
         );
         """,
 

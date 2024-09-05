@@ -1,0 +1,97 @@
+INSERT INTO Menu (id, itemName, price, category)
+        VALUES (1, 'Tender Entree', 4.99, 'Value Meals');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (2, 'Corn Dog Value Meal', 4.99, 'Value Meals');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (3, '2 Hot Dog Value Meal', 4.99, 'Value Meals');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (4, 'Bacon Cheeseburger', 8.29, 'Burgers');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (5, 'Black Bean Burger', 7.59, 'Burgers');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (6, 'Cheeseburger', 6.89, 'Burgers');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (7, 'Gig Em Patty Melt', 7.59, 'Burgers');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (8, 'Classic Hamburger', 6.89, 'Burgers');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (9, 'Aggie Chicken Club', 8.39, 'Sandwiches');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (10, 'Revs Grilled Chicken Sandwich', 8.39, 'Sandwiches');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (11, 'Spicy Chicken Sandwich', 8.39, 'Sandwiches');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (12, 'Chicken Caesar Salad', 8.29, 'Salads');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (13, 'Double Scoop Ice Cream', 3.29, 'Deserts');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (14, 'Aggie Shakes', 4.49, 'Deserts');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (15, 'Cookie Ice Cream Sundae', 4.69, 'Deserts');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (16, 'Root Bear Float', 5.49, 'Deserts');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (17, 'French Fries', 1.99, 'Appetizers');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (18, 'Aquafina Water 16OZ', 1.79, 'Beverages');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (19, 'Aquafina Water 20OZ', 2.39, 'Beverages');
+        
+
+
+        INSERT INTO Menu (id, itemName, price, category)
+        VALUES (20, 'Pepsi Fountain 20OZ', 1.99, 'Beverages');
