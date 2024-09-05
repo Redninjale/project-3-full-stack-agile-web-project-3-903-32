@@ -173,29 +173,41 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center mb-8">
-        <div className="flex flex-col items-center justify-center z-10">
-          <div className="bg-white rounded">
-            <h1 className="text-black p-2 mb-2">Employee login:</h1>
+      <div className="flex flex-col items-center z-10 gap-5">
+        <a
+          href="manager"
+          className="bg-gray-500 w-1/6 hover:bg-gray-700 text-center rounded p-3 text-white text-xl"
+        >
+          Demo Manager Screen
+        </a>
+        <a
+          href="cashier"
+          className="bg-gray-500 w-1/6 hover:bg-gray-700 text-center rounded p-3 text-white text-xl"
+        >
+          Demo Cashier Screen
+        </a>
+        <div className="bg-gray-500 rounded p-3">
+          <div className="flex flex-col items-center justify-center z-10">
+            <h1 className="text-white text-xl p-2">Employee login:</h1>
           </div>
-        </div>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            const decoded = jwtDecode(credentialResponse?.credential);
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const decoded = jwtDecode(credentialResponse?.credential);
 
-            getRole(decoded.email);
-            if (decoded.email === "csce315manager@gmail.com") {
-              //loginManager();
-            } else if (decoded.email === "csce315cashier@gmail.com") {
-              //  loginCashier();
-            } else {
-              //   loginCustomer();
-            }
-          }}
-          onError={(error) => {
-            console.error("Google login failed:", error);
-          }}
-        />
+              getRole(decoded.email);
+              if (decoded.email === "csce315manager@gmail.com") {
+                //loginManager();
+              } else if (decoded.email === "csce315cashier@gmail.com") {
+                //  loginCashier();
+              } else {
+                //   loginCustomer();
+              }
+            }}
+            onError={(error) => {
+              console.error("Google login failed:", error);
+            }}
+          />
+        </div>
       </div>
       <div className="flex justify-center mb-4">
         <button

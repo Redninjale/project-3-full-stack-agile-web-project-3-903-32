@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './CashierConfirm.css'; // Import CSS file for animation
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./CashierConfirm.css"; // Import CSS file for animation
 
 /**
  * Check if the credential are of a cashier.
- * @returns {boolean} If user is Cashier or not 
+ * @returns {boolean} If user is Cashier or not
  */
 const isAuthenticatedCashier = () => {
   const isCashier = localStorage.getItem("isCashierLoggedIn");
@@ -14,15 +14,15 @@ const isAuthenticatedCashier = () => {
 
 /**
  * Returns the user back to the landing page with incorrect credentials
- * @param {any} WrappedComponent 
+ * @param {any} WrappedComponent
  * @returns user back to landing page when isAuthenticatedCashier is false
  */
 const withCashierAuthentication = (WrappedComponent) => {
   const AuthenticatedComponent = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
-      if (isAuthenticatedCashier() === 'false') {
-        navigate('/'); 
+      if (isAuthenticatedCashier() === "false") {
+        navigate("/");
       }
     }, [navigate]);
 
@@ -32,32 +32,35 @@ const withCashierAuthentication = (WrappedComponent) => {
 
   return AuthenticatedComponent;
 };
-  
-
 
 const CashierConfirm = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        setTimeout(() => {
-            toCashier();
-        }, 3000);
-    }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      toCashier();
+    }, 3000);
+  }, []);
 
-    const toCashier = () => {
-        navigate('/cashier');
-    };
+  const toCashier = () => {
+    navigate("/cashier");
+  };
 
-    return (
-        <div className='flex h-screen bg-customMaroon justify-center items-center'>
-            <div className='text-center'>
-                <h1 className='text-8xl font-bold text-white mb-4 bounce-once'>Order has been Submitted!</h1>
-                <div>
-                    <h2 className='text-5xl font-semibold text-white mb-4 bounce-once'>Please give us a moment</h2>
-                </div>
-            </div>
+  return (
+    <div className="flex h-screen bg-customMaroon justify-center items-center">
+      <div className="text-center">
+        <h1 className="text-8xl font-bold text-white mb-4 bounce-once">
+          Order has been Submitted!
+        </h1>
+        <div>
+          <h2 className="text-5xl font-semibold text-white mb-4 bounce-once">
+            Please give us a moment
+          </h2>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default withCashierAuthentication(CashierConfirm);
+export default CashierConfirm;
+// export default withCashierAuthentication(CashierConfirm);

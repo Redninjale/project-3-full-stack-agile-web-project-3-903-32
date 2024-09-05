@@ -1,38 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ThreeDots } from 'react-loader-spinner'; // Import the loader spinner
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner"; // Import the loader spinner
 import Navbar from "../components/NavbarCashier";
 /**
  * Check if the credential are of a cashier.
- * @returns {boolean} If user is Cashier or not 
+ * @returns {boolean} If user is Cashier or not
  */
 const isAuthenticatedCashier = () => {
-    const isCashier = localStorage.getItem("isCashierLoggedIn");
-    console.log(isCashier);
-    return isCashier;
-  };
+  const isCashier = localStorage.getItem("isCashierLoggedIn");
+  console.log(isCashier);
+  return isCashier;
+};
 
-  /**
+/**
  * Returns the user back to the landing page with incorrect credentials
- * @param {any} WrappedComponent 
+ * @param {any} WrappedComponent
  * @returns user back to landing page when isAuthenticatedCashier is false
  */
-  const withCashierAuthentication = (WrappedComponent) => {
-    const AuthenticatedComponent = (props) => {
-      const navigate = useNavigate();
-      useEffect(() => {
-        if (isAuthenticatedCashier() === 'false') {
-          navigate('/'); 
-        }
-      }, [navigate]);
-  
-      // Render the wrapped component if the user is authenticated as a cashier
-      return isAuthenticatedCashier() ? <WrappedComponent {...props} /> : null;
-    };
-  
-    return AuthenticatedComponent;
+const withCashierAuthentication = (WrappedComponent) => {
+  const AuthenticatedComponent = (props) => {
+    const navigate = useNavigate();
+    useEffect(() => {
+      if (isAuthenticatedCashier() === "false") {
+        navigate("/");
+      }
+    }, [navigate]);
+
+    // Render the wrapped component if the user is authenticated as a cashier
+    return isAuthenticatedCashier() ? <WrappedComponent {...props} /> : null;
   };
-  
+
+  return AuthenticatedComponent;
+};
 
 const CashierPayment = () => {
   const [itemIds, setItemIds] = useState([]);
@@ -252,4 +251,5 @@ const CashierPayment = () => {
   );
 };
 
-export default withCashierAuthentication(CashierPayment);
+export default CashierPayment;
+// export default withCashierAuthentication(CashierPayment);
