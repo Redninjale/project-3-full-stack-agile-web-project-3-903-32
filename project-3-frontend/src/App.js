@@ -130,7 +130,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between">
+    <div className="relative min-h-screen min-w-screen flex flex-col justify-between">
       <video
         autoPlay
         muted

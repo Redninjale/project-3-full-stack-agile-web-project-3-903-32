@@ -89,11 +89,11 @@ def get_employee(email):
         db.session.execute(query, {'employeename': data['employeename'], 'position': data['position'], 'email': email})
         db.session.commit()
         return jsonify({'message': 'Employee object updated successfully'}), 200
-    elif request.method == 'DELETE':
-        query = text("DELETE FROM Employees WHERE email = :email")
-        db.session.execute(query, {'email': email})
-        db.session.commit()
-        return jsonify({'message': 'Employee object deleted successfully'}), 200
+    # elif request.method == 'DELETE':
+    #     query = text("DELETE FROM Employees WHERE email = :email")
+    #     db.session.execute(query, {'email': email})
+    #     db.session.commit()
+    #     return jsonify({'message': 'Employee object deleted successfully'}), 200
     
 @app.route('/api/employee/add')
 def add_employee():
@@ -125,24 +125,24 @@ def http_employee():
         result = db.session.execute(query).fetchall()
         employees = [{"id": row[0], "name": row[1], "position": row[2], "email": row[3]} for row in result]
         return jsonify(employees)
-    elif request.method == 'POST':
-        query = text("SELECT id from Employees Order By id DESC LIMIT 1")
-        res = db.session.execute(query).fetchone()
-        if res is None:
-            employee_id = 1
-        else:
-            employee_id = res[0] + 1
-        data = request.get_json()
-        if 'name' not in data:
-            return jsonify({'error': 'Name is required'}), 400
-        if 'position' not in data:
-            return jsonify({'error': 'Position is required'}), 400
-        if 'email' not in data:
-            return jsonify({'error': 'Email is required'}), 400
-        query = text("INSERT INTO Employees (id, employeename, position, email) VALUES (:id, :name, :position, :email)")
-        db.session.execute(query, {'id': employee_id, 'name': data['name'], 'position': data['position'], 'email': data['email']})
-        db.session.commit()
-        return jsonify({'message': 'Employee updated successfully'}), 200
+    # elif request.method == 'POST':
+    #     query = text("SELECT id from Employees Order By id DESC LIMIT 1")
+    #     res = db.session.execute(query).fetchone()
+    #     if res is None:
+    #         employee_id = 1
+    #     else:
+    #         employee_id = res[0] + 1
+    #     data = request.get_json()
+    #     if 'name' not in data:
+    #         return jsonify({'error': 'Name is required'}), 400
+    #     if 'position' not in data:
+    #         return jsonify({'error': 'Position is required'}), 400
+    #     if 'email' not in data:
+    #         return jsonify({'error': 'Email is required'}), 400
+    #     query = text("INSERT INTO Employees (id, employeename, position, email) VALUES (:id, :name, :position, :email)")
+        # db.session.execute(query, {'id': employee_id, 'name': data['name'], 'position': data['position'], 'email': data['email']})
+        # db.session.commit()
+        # return jsonify({'message': 'Employee updated successfully'}), 200
 
 @app.route('/api/employees/<employee_id>', methods=['DELETE', 'PUT'])
 def put_delete_employee(employee_id):
@@ -158,11 +158,11 @@ def put_delete_employee(employee_id):
         db.session.execute(query, {'employee_id': employee_id, 'name': data['name'], 'position': data['position'], 'email': data['email']})
         db.session.commit()
         return jsonify({'message': 'Employee updated successfully'}), 200
-    elif request.method == 'DELETE':
-        query = text("DELETE FROM Employees WHERE id = :employee_id")
-        db.session.execute(query, {'employee_id': employee_id})
-        db.session.commit()
-        return jsonify({'message': 'Employee deleted successfully'}), 200
+    # elif request.method == 'DELETE':
+    #     query = text("DELETE FROM Employees WHERE id = :employee_id")
+    #     db.session.execute(query, {'employee_id': employee_id})
+    #     db.session.commit()
+    #     return jsonify({'message': 'Employee deleted successfully'}), 200
 
 ###################################
 #             MENU API            #
@@ -214,19 +214,19 @@ def get_menu_items():
             return jsonify(data)
         else:
             return jsonify({'error': 'No data found'}), 404
-    elif request.method == 'POST':
-        data = request.get_json()
+    # elif request.method == 'POST':
+    #     data = request.get_json()
 
-        # Check if the item name already exists
-        check_query = text("SELECT * FROM Menu WHERE itemName = :itemName")
-        existing_item = db.session.execute(check_query, {'itemName': data['itemName']}).fetchone()
-        if existing_item:
-            return jsonify({'error': 'Item with this name already exists'}), 400
+    #     # Check if the item name already exists
+    #     check_query = text("SELECT * FROM Menu WHERE itemName = :itemName")
+    #     existing_item = db.session.execute(check_query, {'itemName': data['itemName']}).fetchone()
+    #     if existing_item:
+    #         return jsonify({'error': 'Item with this name already exists'}), 400
 
-        query = text("INSERT INTO menu (itemname, price, category) VALUES (:itemName, :price, :category);")
-        db.session.execute(query, {'itemName': data['itemName'], 'price': data['price'], 'category': data['category']})
-        db.session.commit()
-        return jsonify({'message': 'Menu item created successfully'}), 201
+    #     query = text("INSERT INTO menu (itemname, price, category) VALUES (:itemName, :price, :category);")
+    #     db.session.execute(query, {'itemName': data['itemName'], 'price': data['price'], 'category': data['category']})
+    #     db.session.commit()
+    #     return jsonify({'message': 'Menu item created successfully'}), 201
 
 @app.route('/api/menu/ordering', methods=['GET'])
 def get_menu_items_ordering():
@@ -341,13 +341,13 @@ def get_menu_item(menu_id):
         db.session.execute(query, {'itemName': data['itemName'], 'price': data['price'], 'category': data['category'], 'id': menu_id})
         db.session.commit()
         return jsonify({'message': 'Menu item updated successfully'}), 200
-    elif request.method == 'DELETE':
-        delete_menu_mijunc_batch(menu_id)
-        delete_menu_omjunc_batch(menu_id)
-        query = text("DELETE FROM Menu WHERE id = :id")
-        db.session.execute(query, {'id': menu_id})
-        db.session.commit()
-        return jsonify({'message': 'Menu item deleted successfully'}), 200
+    # elif request.method == 'DELETE':
+    #     delete_menu_mijunc_batch(menu_id)
+    #     delete_menu_omjunc_batch(menu_id)
+    #     query = text("DELETE FROM Menu WHERE id = :id")
+    #     db.session.execute(query, {'id': menu_id})
+    #     db.session.commit()
+    #     return jsonify({'message': 'Menu item deleted successfully'}), 200
 
     
 def delete_menu_omjunc_batch(menu_id):
@@ -462,24 +462,24 @@ def get_inventory_items():
             return jsonify(data)
         else:
             return jsonify({'error': 'No data found'}), 404
-    elif request.method == 'POST':
-        data = request.get_json()
-        if (data['name'] is not None
-        and data['stock'] is not None
-        and data['minimum'] is not None 
-        and data['capacity'] is not None 
-        and data['location'] is not None 
-        and data['supplier'] is not None):
-            query = text("SELECT id FROM Inventory Order BY id DESC LIMIT 1")
-            res = db.session.execute(query).fetchone()
-            if res is not None:
-                new_id = res[0] + 1
-            query = text("INSERT INTO Inventory (id, name, stock, minimum, capacity, location, supplier) VALUES (:id, :name, :stock, :minimum, :capacity, :location, :supplier)")
-            db.session.execute(query, {'id' : new_id ,'name' : data['name'], 'stock' : data['stock'], 'minimum': data['minimum'], 'capacity': data['capacity'], 'location': data['location'], 'supplier': data['supplier']})
-            db.session.commit()
-        else:
-            return jsonify({'error': 'Missing data'}), 400
-        return jsonify({'message': 'Inventory Item created successfully'}), 201
+    # elif request.method == 'POST':
+    #     data = request.get_json()
+    #     if (data['name'] is not None
+    #     and data['stock'] is not None
+    #     and data['minimum'] is not None 
+    #     and data['capacity'] is not None 
+    #     and data['location'] is not None 
+    #     and data['supplier'] is not None):
+    #         query = text("SELECT id FROM Inventory Order BY id DESC LIMIT 1")
+    #         res = db.session.execute(query).fetchone()
+    #         if res is not None:
+    #             new_id = res[0] + 1
+    #         query = text("INSERT INTO Inventory (id, name, stock, minimum, capacity, location, supplier) VALUES (:id, :name, :stock, :minimum, :capacity, :location, :supplier)")
+    #         db.session.execute(query, {'id' : new_id ,'name' : data['name'], 'stock' : data['stock'], 'minimum': data['minimum'], 'capacity': data['capacity'], 'location': data['location'], 'supplier': data['supplier']})
+    #         db.session.commit()
+    #     else:
+    #         return jsonify({'error': 'Missing data'}), 400
+    #     return jsonify({'message': 'Inventory Item created successfully'}), 201
 
 
 # GET: Find all low stock items
@@ -524,7 +524,7 @@ def get_inventory_shortage():
         return jsonify({'error': 'No data found'}), 404
 
 
-@app.route('/api/inventory/<inventory_id>', methods=['PUT', "GET", "DELETE", "POST"])
+@app.route('/api/inventory/<inventory_id>', methods=['PUT', "GET", "DELETE"])
 def update_inventory(inventory_id):
     """
     Updates, retrieves, or deletes an inventory item.
@@ -582,11 +582,11 @@ def update_inventory(inventory_id):
             return jsonify({'error': 'Missing data'}), 400
         return jsonify({'message': 'Inventory Item updated successfully'}), 200
 
-    elif(request.method == 'DELETE'):
-        query = text("DELETE FROM Inventory WHERE id = :id")
-        db.session.execute(query, {'id': inventory_id})
-        db.session.commit()
-        return jsonify({'message': 'Inventory item deleted successfully'}), 200
+    # elif(request.method == 'DELETE'):
+    #     query = text("DELETE FROM Inventory WHERE id = :id")
+    #     db.session.execute(query, {'id': inventory_id})
+    #     db.session.commit()
+    #     return jsonify({'message': 'Inventory item deleted successfully'}), 200
 
 @app.route('/api/inventory/<inventory_id>/add', methods=['PUT'])
 def add_inventory(inventory_id):
@@ -648,7 +648,7 @@ def update_inventory_batch(data):
 ###################################
 #             MIJUNC API          #
 ###################################
-@app.route('/api/mijunc/<menu_id>', methods=['GET', 'DELETE', 'POST', 'PUT'])
+@app.route('/api/mijunc/<menu_id>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def get_menu_inventory(menu_id):
     """
     Retrieves, creates, updates, or deletes menu inventory items.
@@ -689,12 +689,12 @@ def get_menu_inventory(menu_id):
         db.session.execute(query, {'menu_id': menu_id, 'item_id': data['itemID']})
         db.session.commit()
         return jsonify({'message': 'Menu inventory deleted successfully'}), 200
-    elif request.method == 'POST':
-        data = request.get_json()
-        query = text("INSERT INTO MIJunc (menuID, itemID, itemAmount) VALUES (:menu_id, :item_id, :item_amount)")
-        db.session.execute(query, {'menu_id': menu_id, 'item_id': data['itemID'], 'item_amount': data['itemAmount']})
-        db.session.commit()
-        return jsonify({'message': 'Menu inventory created successfully'}), 201
+    # elif request.method == 'POST':
+    #     data = request.get_json()
+    #     query = text("INSERT INTO MIJunc (menuID, itemID, itemAmount) VALUES (:menu_id, :item_id, :item_amount)")
+    #     db.session.execute(query, {'menu_id': menu_id, 'item_id': data['itemID'], 'item_amount': data['itemAmount']})
+    #     db.session.commit()
+    #     return jsonify({'message': 'Menu inventory created successfully'}), 201
     elif request.method == 'PUT':
         data = request.get_json()
         query = text("UPDATE MIJunc SET itemAmount = :item_amount WHERE menuID = :menu_id AND itemID = :item_id")
@@ -740,7 +740,7 @@ def get_outside_menu_inventory(menu_id):
 ###################################
 #             Ordering API        #
 ###################################
-@app.route('/api/order', methods=['POST', 'GET'])
+@app.route('/api/order', methods=['GET', 'POST'])
 def update_orders():
     """
     Handles the creation of new orders and retrieval of orders within a specified time range.
