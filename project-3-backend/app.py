@@ -3,7 +3,7 @@ import requests
 import json
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text, select
+from sqlalchemy import text, select, create_engine
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -16,7 +16,7 @@ CORS(app)
 load_dotenv()
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('PSQL_USER')}:{os.getenv('PSQL_PASSWORD')}@{os.getenv('PSQL_HOST')}/{os.getenv('PSQL_DATABASE')}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql+psycopg://{os.getenv('PSQL_USER')}:{os.getenv('PSQL_PASSWORD')}@{os.getenv('PSQL_HOST')}/{os.getenv('PSQL_DATABASE')}?sslmode=require"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
