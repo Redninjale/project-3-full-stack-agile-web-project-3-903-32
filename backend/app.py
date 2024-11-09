@@ -1,7 +1,7 @@
 import random
 import requests
 import json
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text, select, create_engine
 import os
@@ -11,7 +11,8 @@ from datetime import datetime
 import deepl
 from collections import defaultdict
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/build', static_url_path="/")
+
 CORS(app)
 load_dotenv()
 
@@ -21,8 +22,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 
 ###################################
 #             Employee API        #

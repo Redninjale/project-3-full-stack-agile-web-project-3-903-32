@@ -198,21 +198,25 @@ const Customer = () => {
       window.speechSynthesis.speak(msg);
     }
     return (
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-gray-600 bg-gray-50 flex flex-col p-4 rounded">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 w-1/4 -translate-y-1/2 border-2 border-gray-600 bg-gray-50 flex flex-col p-4 rounded">
+        <p className="flex-row flex align-center">
+          <span className="flex-1">
+            Click to add this item to your order!
+          </span>
+          <button onClick={handleCloseModal}>
+            <img
+              src={`${process.env.PUBLIC_URL}/x-solid.svg`}
+              alt="Close"
+              className="h-[15px]"
+            />
+          </button>
+
+        </p>
         <button
           onClick={handleCloseAndOrderModal}
           className="mt-4 my-4 px-4 py-8 bg-blue-300 text-black rounded hover:bg-blue-400 transition duration-300 ease-in-out font-bold text-lg"
         >
-          {" "}
-          {recommendedItem.itemName}{" "}
-        </button>
-        <p>Click to add this delicious item to your order!</p>
-        <button onClick={handleCloseModal}>
-          <img
-            src={`${process.env.PUBLIC_URL}/x-solid.svg`}
-            alt="Close"
-            className="h-[20px] my-4"
-          />
+          {recommendedItem.itemName}
         </button>
       </div>
     );
@@ -508,21 +512,6 @@ const Customer = () => {
   const handleRecommendedItemClick = (recommendedItem) => {
     addToOrder(recommendedItem);
   };
-
-  const hasSpokenRef = useRef(false);
-
-  useEffect(() => {
-    if (!hasSpokenRef.current) {
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-      }
-      const msg = new SpeechSynthesisUtterance();
-      msg.text =
-        "Welcome to Rev's American Grill. For speech assistance, please click the green, ON, button on the top of the screen. Click again at any point to turn speech assistance off.";
-      window.speechSynthesis.speak(msg);
-      hasSpokenRef.current = true;
-    }
-  }, []);
 
   return (
     <div className="w-screen h-screen overflow-hidden ">
